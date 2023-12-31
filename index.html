@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title</title>
+  <style>
+    body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            transition: background-color 0.5s ease;
+        }
+    form {
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.5s ease;
+            margin-right: 20px; /* Add margin for spacing */
+    }
+    #countdown {
+      font-size: 2em;
+      margin-top: 20px;
+    }
+    p.title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+    p.title::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #4caf50;
+            transition: all 0.5s ease;
+        }
+
+    p.title:hover::before {
+            width: 100%;
+            left: 0;
+        }
+  </style>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        var randomR = Math.floor(Math.random() * 256);
+        var randomG = Math.floor(Math.random() * 256);
+        var randomB = Math.floor(Math.random() * 256);
+
+        var apiUrl = "https://php-noise.com/noise.php?r=" + randomR + "&g=" + randomG + "&b=" + randomB + "&tiles=50&tileSize=7&borderWidth=0&mode=mode-a&json";
+
+        $.get(apiUrl, function (data) {
+            var imageUrl = data.uri;
+
+            $('body').css({
+                'background-image': 'url(' + imageUrl + ')',
+                'background-size': 'cover',
+                'background-position': 'center',
+            });
+        });
+    });
+</script>
+<form>
+  <p class="title">Title</p>
+  <p id="countdown"></p>
+
+  <script>
+    function countdown() {
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const newYear = new Date(currentYear + 1, 0, 1);
+      const timeLeft = newYear - now;
+
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      document.getElementById('countdown').innerHTML = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+    }
+    setInterval(countdown, 1000);
+    countdown();
+  </script>
+</form>
+</body>
+</html>
